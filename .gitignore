@@ -1,0 +1,48 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Live data (NFR-03)
+honeypot/logs/
+honeypot/downloads/
+data/sentrix.db
+data/sentrix.db-wal
+data/sentrix.db-shm
+
+# Secrets
+.env
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Local databases and runtime artifacts
+*.db
+*.db-wal
+*.db-shm
+__pycache__/
+.streamlit/secrets.toml
+
+# Local AI tooling configuration
+.agents/
+.claude/
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Generated Cowrie host keys and runtime data
+honeypot/cowrie-var/lib/cowrie/ssh_host_*
+honeypot/cowrie-var/lib/cowrie/uuid
+honeypot/cowrie-var/log/
+honeypot/logs/
+honeypot/downloads/
+
+# Temporary editor/backup files
+*.save
+
+# Local Cowrie credentials
+honeypot/userdb.txt
+honeypot/cowrie-etc/userdb.txt

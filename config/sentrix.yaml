@@ -1,0 +1,89 @@
+# SENTRIX configuration — CONTRACT #3 (frozen day 1)
+# All thresholds, windows, patterns, allowlists live here. No magic numbers in code (FR-22).
+
+detection:
+  r01_brute_force:
+    window_seconds: 60
+    threshold: 5          # 5 failures in 60s -> Medium
+    high_threshold: 20    # 20 failures in 60s -> High
+    severity: medium
+    severity_high: high
+    cooldown_seconds: 300
+
+  r02_password_spraying:
+    window_seconds: 120
+    distinct_usernames: 4
+    severity: medium
+    cooldown_seconds: 300
+
+  r03_login_after_failures:
+    window_seconds: 300
+    min_prior_failures: 3
+    severity: high
+    cooldown_seconds: 300
+
+  r04_suspicious_command:
+    cooldown_seconds: 60
+    patterns:
+      discovery:
+        severity: low
+        regex:
+          - '\bwhoami\b'
+          - '^\s*id\s*$'
+          - '\buname\s+-a\b'
+          - 'cat\s+/proc/cpuinfo'
+          - '\bifconfig\b'
+      credential_access:
+        severity: medium
+        regex:
+          - 'cat\s+/etc/passwd'
+          - 'cat\s+/etc/shadow'
+      download_execute:
+        severity: high
+        regex:
+          - '\bwget\b'
+          - '\bcurl\b.*\|\s*(ba)?sh'
+          - 'chmod\s+\+x'
+          - 'base64\s+-d'
+      persistence:
+        severity: high
+        regex:
+          - '\bcrontab\b'
+          - 'authorized_keys'
+          - 'rc\.local'
+      reverse_shell:
+        severity: high
+        regex:
+          - 'nc\s+-e'
+          - 'bash\s+-i'
+          - '/dev/tcp/'
+      destructive:
+        severity: medium
+        regex:
+          - 'rm\s+-rf\s+/'
+          - 'dd\s+of=/dev'
+
+  r05_file_transfer:
+    severity: high
+    cooldown_seconds: 60
+
+  r06_connection_flood:
+    window_seconds: 30
+    threshold: 10
+    severity: low
+    cooldown_seconds: 60
+
+correlation:
+  idle_gap_seconds: 600          # 10 min between alerts keeps the same incident (FR-30)
+  escalation_stages: 3           # >=3 distinct stages -> +1 severity level (FR-32)
+
+allowlist:
+  ips: []                        # gateway, admin machine, dashboard host (FR-63)
+
+response:
+  mode: dry_run                  # dry_run | real
+  block_minutes: 15
+  min_severity: high
+
+timezone:
+  display: "Africa/Algiers"      # store UTC, display local

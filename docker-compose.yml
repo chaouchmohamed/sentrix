@@ -1,0 +1,37 @@
+services:
+  cowrie:
+    image: cowrie/cowrie:latest
+    container_name: sentrix-cowrie
+    restart: unless-stopped
+    volumes:
+      - ./honeypot/cowrie-var:/cowrie/cowrie-git/var
+      - ./honeypot/cowrie-etc:/cowrie/cowrie-git/etc
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    read_only: false
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 100
+    networks:
+      sentrix-lab:
+        ipv4_address: 172.28.0.10
+
+  kali:
+    build:
+      context: .
+      dockerfile: Dockerfile.kali
+    container_name: sentrix-kali
+    restart: unless-stopped
+    mem_limit: 512m
+    cpus: 0.5
+    networks:
+      sentrix-lab:
+        ipv4_address: 172.28.0.20
+
+networks:
+  sentrix-lab:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.28.0.0/24
