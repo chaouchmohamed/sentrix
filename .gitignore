@@ -23,6 +23,9 @@ data/sentrix.db-shm
 *.db
 *.db-wal
 *.db-shm
+
+!data/demo/
+!data/demo/demo.db
 __pycache__/
 .streamlit/secrets.toml
 
