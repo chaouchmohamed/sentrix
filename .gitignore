@@ -49,3 +49,22 @@ honeypot/downloads/
 # Local Cowrie credentials
 honeypot/userdb.txt
 honeypot/cowrie-etc/userdb.txt
+
+# React frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Additional runtime and sensitive data
+data/demo/sentrix-live.log
+data/demo/demo.db
+honeypot/cowrie-var/lib/cowrie/tty/
+honeypot/cowrie-var/lib/cowrie/ssh_host_*
+honeypot/cowrie-var/lib/cowrie/uuid
+
+# Python generated files
+**/__pycache__/
+*.py[cod]
+
+# Temporary backups
+*.bak

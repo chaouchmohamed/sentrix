@@ -1,4 +1,4 @@
-.PHONY: up down run dash test replay reset init
+.PHONY: up down run dash test replay reset init api api-install frontend frontend-install build-frontend
 
 init:
 	python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt || true
@@ -17,6 +17,21 @@ replay:
 
 dash:
 	streamlit run dashboard/app.py --server.port 8501 --server.address 0.0.0.0
+
+api:
+	.venv/bin/uvicorn api.main:app --host 0.0.0.0 --port $${API_PORT:-8000} --reload
+
+api-install:
+	.venv/bin/pip install -r api/requirements.txt
+
+frontend:
+	cd frontend && npm run dev
+
+frontend-install:
+	cd frontend && npm install
+
+build-frontend:
+	cd frontend && npm run build
 
 test:
 	pytest -q
