@@ -30,34 +30,29 @@ The goal is simple:
 > Turn raw honeypot activity into understandable security events, alerts, and incident timelines.
 
 ## How it works
+<div align="center">
+
+![SENTRIX Architecture](workflow.png)
+
+<sub>SENTRIX — End-to-end architecture and workflow</sub>
 
 ```mermaid
 flowchart TD
-    A["Kali Linux<br/>Simulated attacker"] -->|"SSH activity"| B["Cowrie Honeypot<br/>Captures attacker behavior"]
+    A["Kali Linux - Simulated attacker"] -->|"SSH activity"| B["Cowrie Honeypot"]
     B -->|"JSON logs"| C["Log Tailer"]
     C --> D["Parser & Normalizer"]
     D --> E[("SQLite Database")]
-    E --> F["Detection Engine<br/>6 detection rules"]
-    F --> G["Alert Correlation<br/>Incident grouping"]
-    G --> H["Response Module<br/>Dry-run by default"]
+    E --> F["Detection Engine - 6 detection rules"]
+    F --> G["Alert Correlation - Incident grouping"]
+    G --> H["Response Module - Dry-run by default"]
     E --> I["Read-only API"]
     F --> I
     G --> I
     H --> I
     I --> J["React Dashboard"]
-
-    classDef attacker fill:#fff0f0,stroke:#dc2626,color:#7f1d1d
-    classDef sensor fill:#eff6ff,stroke:#2563eb,color:#1e3a8a
-    classDef processing fill:#f5f3ff,stroke:#7c3aed,color:#4c1d95
-    classDef storage fill:#ecfdf5,stroke:#059669,color:#064e3b
-    classDef output fill:#fffbeb,stroke:#d97706,color:#78350f
-    class A attacker
-    class B sensor
-    class C,D,F,G processing
-    class E storage
-    class H,I,J output
 ```
 
+</div>
 ### The workflow
 
 1. **Generate activity** — Kali is used to simulate SSH attacks inside the lab.
